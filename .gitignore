@@ -1,2 +1,4 @@
-.env
+secrets.py
 .idea/
+geckodriver.log
+__pycache__/
