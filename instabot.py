@@ -8,6 +8,20 @@ class InstaBot:
 
     def __init__(self):
         self.driver = webdriver.Firefox()
+        self.login()
+        following = self.get_following()
+        followers = self.get_followers()
+
+        not_following_you_back = [user for user in following if user not in followers]
+        not_following_them_back = [user for user in followers if user not in following]
+
+        print("==========================================")
+        print("Quem você segue e não te segue de volta:")
+        print(len(not_following_you_back), not_following_you_back)
+        print("==========================================")
+        print("Quem te segue e você não segue de volta:")
+        print(len(not_following_them_back), not_following_them_back)
+        print("==========================================")
 
     def login(self):
         self.driver.get("https://instagram.com")
@@ -58,15 +72,27 @@ class InstaBot:
         # close modal
         self.driver.find_element_by_xpath("/html/body/div[4]/div/div[1]/div/div[2]/button").click()
 
-        # print(len(names), names)
         return names
 
     def get_followers(self):
-        # TODO: implement
-        # not_following_back = [user for user in following if user not in followers]
-        pass
+        self.driver.find_element_by_xpath("/html/body/div[1]/section/main/div/header/section/ul/li[2]/a").click()
+        scrollbox = self.driver.find_element_by_xpath("/html/body/div[4]/div/div[2]")
+        sleep(1)
+
+        last_height, height = 0, 1
+        while last_height != height:
+            last_height = height
+            sleep(1)
+            height = self.driver.execute_script("""
+                                                arguments[0].scrollTo(0, arguments[0].scrollHeight);
+                                                return arguments[0].scrollHeight;
+                                                """, scrollbox)
+
+        ul = scrollbox.find_element_by_xpath("/html/body/div[4]/div/div[2]/ul")
+        links = ul.find_elements_by_tag_name("a")
+        names = [name.text for name in links if name.text != ""]
+
+        return names
 
 
 bot = InstaBot()
-bot.login()
-bot.get_following()
