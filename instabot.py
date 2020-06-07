@@ -41,6 +41,8 @@ class InstaBot:
         sleep(4)
 
         try:
+            self.driver.find_element_by_xpath("/html/body/div[1]/section/main/div/div/div/div/button").click()
+            sleep(2)
             modal_ativar_notificacoes = self.driver.find_element_by_xpath("/html/body/div[4]/div/div/div[3]/button[2]")
             modal_ativar_notificacoes.click()
         except NoSuchElementException:
