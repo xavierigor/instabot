@@ -46,15 +46,8 @@ class InstaBot:
         try:
             self.driver.find_element_by_xpath("/html/body/div[1]/section/main/div/div/div/div/button").click()
             sleep(2)
-            # modal_ativar_notificacoes = self.driver.find_element_by_xpath("/html/body/div[4]/div/div/div/div[3]/button[2]")
 
             WebDriverWait(self.driver, 20).until(EC.element_to_be_clickable((By.XPATH, "/html/body/div[4]/div/div/div/div[3]/button[2]"))).click()
-            # ActionChains(self.driver).move_to_element(modal_ativar_notificacoes).click().perform()
-
-            # modal_ativar_notificacoes = self.driver.find_element_by_xpath("/html/body/div[4]/div/div/div/div[3]/button[2]")
-            # WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH, modal_ativar_notificacoes))).click()
-            # # modal_ativar_notificacoes = self.driver.find_element_by_xpath("/html/body/div[4]/div/div/div[3]/button[2]")
-            # modal_ativar_notificacoes.click()
         except NoSuchElementException:
             pass
 
