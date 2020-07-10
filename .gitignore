@@ -2,3 +2,4 @@ secrets.py
 .idea/
 geckodriver.log
 __pycache__/
+.python-version

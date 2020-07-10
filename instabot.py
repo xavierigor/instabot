@@ -2,6 +2,9 @@ from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
 from time import sleep
 from secrets import username, password
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
 
 
 class InstaBot:
@@ -43,8 +46,15 @@ class InstaBot:
         try:
             self.driver.find_element_by_xpath("/html/body/div[1]/section/main/div/div/div/div/button").click()
             sleep(2)
-            modal_ativar_notificacoes = self.driver.find_element_by_xpath("/html/body/div[4]/div/div/div[3]/button[2]")
-            modal_ativar_notificacoes.click()
+            # modal_ativar_notificacoes = self.driver.find_element_by_xpath("/html/body/div[4]/div/div/div/div[3]/button[2]")
+
+            WebDriverWait(self.driver, 20).until(EC.element_to_be_clickable((By.XPATH, "/html/body/div[4]/div/div/div/div[3]/button[2]"))).click()
+            # ActionChains(self.driver).move_to_element(modal_ativar_notificacoes).click().perform()
+
+            # modal_ativar_notificacoes = self.driver.find_element_by_xpath("/html/body/div[4]/div/div/div/div[3]/button[2]")
+            # WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH, modal_ativar_notificacoes))).click()
+            # # modal_ativar_notificacoes = self.driver.find_element_by_xpath("/html/body/div[4]/div/div/div[3]/button[2]")
+            # modal_ativar_notificacoes.click()
         except NoSuchElementException:
             pass
 
@@ -58,7 +68,8 @@ class InstaBot:
                                                            "a")
         following_link.click()
 
-        scrollbox = self.driver.find_element_by_xpath("/html/body/div[4]/div/div[2]")
+        # scrollbox = self.driver.find_element_by_xpath("/html/body/div[4]/div/div[2]")
+        scrollbox = self.driver.find_element_by_xpath("/html/body/div[4]/div/div/div[2]")
         last_height, height = 0, 1
         while last_height != height:
             last_height = height
@@ -72,13 +83,13 @@ class InstaBot:
         names = [name.text for name in links if name.text != ""]
 
         # close modal
-        self.driver.find_element_by_xpath("/html/body/div[4]/div/div[1]/div/div[2]/button").click()
+        self.driver.find_element_by_xpath("/html/body/div[4]/div/div/div[1]/div/div[2]/button").click()
 
         return names
 
     def get_followers(self):
         self.driver.find_element_by_xpath("/html/body/div[1]/section/main/div/header/section/ul/li[2]/a").click()
-        scrollbox = self.driver.find_element_by_xpath("/html/body/div[4]/div/div[2]")
+        scrollbox = self.driver.find_element_by_xpath("/html/body/div[4]/div/div/div[2]")
         sleep(1)
 
         last_height, height = 0, 1
@@ -90,7 +101,7 @@ class InstaBot:
                                                 return arguments[0].scrollHeight;
                                                 """, scrollbox)
 
-        ul = scrollbox.find_element_by_xpath("/html/body/div[4]/div/div[2]/ul")
+        ul = scrollbox.find_element_by_xpath("/html/body/div[4]/div/div/div[2]/ul")
         links = ul.find_elements_by_tag_name("a")
         names = [name.text for name in links if name.text != ""]
 
